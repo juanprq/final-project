@@ -5,6 +5,7 @@ __pycache__/
 *$py.class
 datasets/
 Pipfile
+.vscode/
 
 # C extensions
 *.so
