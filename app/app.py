@@ -1,13 +1,29 @@
 import dash
+import pandas as pd
 from dash.dependencies import Output, Input, State
 import dash_html_components as html
 import offices.layout
 import brands.layout
 import products.layout
+from sqlalchemy import create_engine, text
 
-# token = 'pk.eyJ1IjoibmV3dXNlcmZvcmV2ZXIiLCJhIjoiY2o2M3d1dTZiMGZobzMzbnp2Z2NiN3lmdyJ9.cQFKe3F3ovbfxTsM9E0ZSQ'
+engine = create_engine('postgresql://postgres:n0import4@localhost:5432/final-project')
+sales_df = pd.read_sql('SELECT * FROM sales', engine.connect(), parse_dates=['date'])
+sales_df['month_year'] = sales_df['date'].apply(lambda x: x.strftime("%Y-%m"))
+
 app = dash.Dash(__name__, external_stylesheets=['https://codepen.io/uditagarwal/pen/oNvwKNP.css'])
 app.config.suppress_callback_exceptions = True
+
+
+def runQuery(sql):
+    result = engine.connect().execute((text(sql)))
+    return pd.DataFrame(result.fetchall(), columns=result.keys())
+
+
+def filter_df(df, start_date, end_date):
+    mask1 = df.date > start_date
+    mask2 = df.date < end_date
+    return df[mask1 & mask2]
 
 
 def generate_table(dataframe, max_rows=10):

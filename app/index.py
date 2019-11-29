@@ -3,17 +3,10 @@ import dash_core_components as dcc
 import dash_html_components as html
 import plotly.graph_objects as go
 from dash.dependencies import Output, Input, State
-import offices
-import brands
-import products
-from app import app
-
-
-def dateparse(x):
-    return pd.datetime.strptime(x, '%d/%m/%Y')
-
-
-snacks_df = pd.read_csv('datasets/clean_snacks.csv', dtype={'client_id': str}, parse_dates=['date'], date_parser=dateparse)
+import offices.callbacks
+import brands.callbacks
+import products.callbacks
+from app import app, sales_df
 
 app.layout = html.Div(children=[
     html.Div(
@@ -24,8 +17,8 @@ app.layout = html.Div(children=[
                 children=[
                     dcc.DatePickerRange(
                         id='date-picker-range',  # The id of the DatePicker, its always very important to set an Id for all our components
-                        start_date=snacks_df['date'].min(),  # The start_date is going to be the min of Order Date in our dataset
-                        end_date=snacks_df['date'].max(),
+                        start_date=sales_df['date'].min(),  # The start_date is going to be the min of Order Date in our dataset
+                        end_date=sales_df['date'].max(),
                     )
                 ]
             )
