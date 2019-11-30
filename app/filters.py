@@ -28,6 +28,7 @@ content = html.Div(
             children=[
                 html.Div(children='Distributors:'),
                 dcc.Dropdown(
+                    id='distributors-filter',
                     options=build_option_list(filters_data['distributors']),
                     multi=True
                 ),
@@ -38,6 +39,7 @@ content = html.Div(
             children=[
                 html.Div(children='Brands:'),
                 dcc.Dropdown(
+                    id='brands-filter',
                     options=[
                         {'label': 'New York City', 'value': 'NYC'},
                         {'label': 'Montreal', 'value': 'MTL'},
@@ -53,7 +55,8 @@ content = html.Div(
             children=[
                 html.Div(children='Categories:'),
                 dcc.Dropdown(
-                    options=[{ 'label': cat[0], 'value': cat[0] } for cat in filters_data['categories']],
+                    id='categories-filter',
+                    options=[{'label': cat[0], 'value': cat[0]} for cat in filters_data['categories']],
                     multi=True
                 ),
             ]
@@ -63,6 +66,7 @@ content = html.Div(
             children=[
                 html.Div(children='Offices:'),
                 dcc.Dropdown(
+                    id='offices-filter',
                     options=build_option_list(filters_data['offices']),
                     multi=True
                 ),

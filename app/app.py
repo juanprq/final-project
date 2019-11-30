@@ -14,7 +14,6 @@ app = dash.Dash(__name__, external_stylesheets=[
 ])
 app.config.suppress_callback_exceptions = True
 
-
 @app.callback(Output('tab-content', 'children'),
               [Input('tabs', 'value')])
 def render_content(tab):
