@@ -1,6 +1,11 @@
+import repository
 import dash_html_components as html
 import dash_core_components as dcc
 from datetime import datetime as dt
+filters_data = repository.get_filter_values()
+
+def build_option_list(options):
+    return [{ 'label': option[1], 'value': option[0] } for option in options]
 
 content = html.Div(
     className='rounded shadow-lg p-4 bg-gray-100 flex flex-wrap',
@@ -11,10 +16,10 @@ content = html.Div(
                 html.Div(children='Date Range:'),
                 dcc.DatePickerRange(
                     id='date-range-filter',
-                    min_date_allowed=dt(1995, 8, 5),
-                    max_date_allowed=dt(2017, 9, 19),
-                    initial_visible_month=dt(2017, 8, 5),
-                    end_date=dt(2017, 8, 25)
+                    min_date_allowed=filters_data['start_date'],
+                    max_date_allowed=filters_data['end_date'],
+                    start_date=filters_data['start_date'],
+                    end_date=filters_data['end_date'],
                 ),
             ],
         ),
@@ -23,12 +28,7 @@ content = html.Div(
             children=[
                 html.Div(children='Distributors:'),
                 dcc.Dropdown(
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value=['MTL', 'NYC'],
+                    options=build_option_list(filters_data['distributors']),
                     multi=True
                 ),
             ],
@@ -49,17 +49,11 @@ content = html.Div(
             ]
         ),
         html.Div(
-
             className='w-1/2 p-4',
             children=[
                 html.Div(children='Categories:'),
                 dcc.Dropdown(
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value=['MTL', 'NYC'],
+                    options=[{ 'label': cat[0], 'value': cat[0] } for cat in filters_data['categories']],
                     multi=True
                 ),
             ]
@@ -69,12 +63,7 @@ content = html.Div(
             children=[
                 html.Div(children='Offices:'),
                 dcc.Dropdown(
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value=['MTL', 'NYC'],
+                    options=build_option_list(filters_data['offices']),
                     multi=True
                 ),
             ]
