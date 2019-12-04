@@ -1,6 +1,7 @@
 import dash_html_components as html
-import dash_core_components as dcc
+import filters
 
-product_layer = html.Div([
-            html.H3('Products')            
-        ])
+content = html.Div([
+    html.H2('Products', className='text-5xl'),
+    filters.content,
+])
