@@ -15,11 +15,14 @@ db_name = os.getenv('DB_NAME')
 engine = db.create_engine(f"postgresql://{user}:{password}@{host}:{port}/{db_name}")
 connection = engine.connect()
 
+
 def fetch_query_results(query):
     resultProxy = connection.execute(query)
     return resultProxy.fetchall()
 
-#GET ALL POSSIBLE VALUES FOR THE FILTERS
+# GET ALL POSSIBLE VALUES FOR THE FILTERS
+
+
 def get_filter_values():
     filters = {
         'start_date': fetch_query_results('SELECT MIN(date) FROM sales')[0][0],
@@ -31,7 +34,9 @@ def get_filter_values():
     }
     return filters
 
-#STRINGIFY FILTERS TO WHEN CLAUSE
+# STRINGIFY FILTERS TO WHEN CLAUSE
+
+
 def stringify_filter(filters):
     where = ''
     if len(filters['offices']) > 0:
@@ -55,12 +60,14 @@ def stringify_filter(filters):
             brands = f"{brands}'{i[0]}',"
         where = f'{where} AND p.brand in ({brands[:-1]})'
     return where
-        
-#GET SALES WITH FILTERS
+
+# GET SALES WITH FILTERS
+
+
 def get_sales(filters):
     where_clause = stringify_filter(filters)
     sales = pd.read_sql(("select p.id as product_id,s.flavor,s.date,s.units,s.devolution_units,s.sale_amount,"
-                         "s.sale_discount,s.sale_devolution,s.incentive,l.name as office, lw.name as warehouse,"
+                         "s.sale_discount,s.sale_devolution,s.incentive,l.name as office, s.office_id, lw.name as warehouse,"
                          "d.name as distributor, ls.name as point_of_sale from sales as s "
                          "JOIN locations as l on l.id = s.office_id "
                          "JOIN locations as lw on lw.id = s.warehouse_id "
@@ -69,6 +76,16 @@ def get_sales(filters):
                          "JOIN products as p on p.id = s.product_id "
                          "WHERE s.date BETWEEN %(start_date)s AND %(end_date)s "
                          f"{where_clause}"
-                        ),
-                       connection,params={'start_date':filters['start_date'],'end_date':filters['end_date']})
-    return(sales)
+                         ),
+                        connection, params={'start_date': filters['start_date'], 'end_date': filters['end_date']})
+    return sales
+
+
+def filter_df(df, start_date, end_date):
+    mask1 = df.date > start_date
+    mask2 = df.date < end_date
+    return df[mask1 & mask2]
+
+
+sales = pd.read_sql('SELECT * FROM sales', engine.connect(), parse_dates=['date'])
+sales['month_year'] = sales['date'].apply(lambda x: x.strftime('%Y-%m'))
