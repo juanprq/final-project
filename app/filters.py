@@ -2,10 +2,12 @@ import repository
 import dash_html_components as html
 import dash_core_components as dcc
 from datetime import datetime as dt
-filters_data = repository.get_filter_values()
+filters_data = repository.get_initial_filter()
+
 
 def build_option_list(options):
-    return [{ 'label': option[1], 'value': option[0] } for option in options]
+    return [{'label': option[0], 'value': option[0]} for option in options]
+
 
 content = html.Div(
     className='rounded shadow-lg p-4 bg-gray-100 flex flex-wrap',
@@ -29,8 +31,9 @@ content = html.Div(
                 html.Div(children='Distributors:'),
                 dcc.Dropdown(
                     id='distributors-filter',
-                    options=build_option_list(filters_data['distributors']),
-                    multi=True
+                    options=[],
+                    multi=True,
+                    value=['Grandes Superficies']
                 ),
             ],
         ),
@@ -40,13 +43,9 @@ content = html.Div(
                 html.Div(children='Brands:'),
                 dcc.Dropdown(
                     id='brands-filter',
-                    options=[
-                        {'label': 'New York City', 'value': 'NYC'},
-                        {'label': 'Montreal', 'value': 'MTL'},
-                        {'label': 'San Francisco', 'value': 'SF'}
-                    ],
-                    value=['MTL', 'NYC'],
-                    multi=True
+                    options=[],
+                    multi=True,
+                    value=['Criollas']
                 ),
             ]
         ),
@@ -56,8 +55,9 @@ content = html.Div(
                 html.Div(children='Categories:'),
                 dcc.Dropdown(
                     id='categories-filter',
-                    options=[{'label': cat[0], 'value': cat[0]} for cat in filters_data['categories']],
-                    multi=True
+                    options=[],
+                    multi=True,
+                    value=['Producto En Frituras']
                 ),
             ]
         ),
@@ -67,8 +67,9 @@ content = html.Div(
                 html.Div(children='Offices:'),
                 dcc.Dropdown(
                     id='offices-filter',
-                    options=build_option_list(filters_data['offices']),
-                    multi=True
+                    options=[],
+                    multi=True,
+                    value=['Cali']
                 ),
             ]
         ),
