@@ -4,6 +4,7 @@ __pycache__/
 *.py[cod]
 *$py.class
 datasets/
+final-datasets/
 Pipfile
 .vscode/
 
@@ -86,7 +87,6 @@ celerybeat-schedule
 *.sage.py
 
 # Environments
-.env
 .venv
 env/
 venv/
