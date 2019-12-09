@@ -2,12 +2,9 @@ import repository
 import dash_html_components as html
 import dash_core_components as dcc
 from datetime import datetime as dt
+import numpy as np
+
 filters_data = repository.get_initial_filter()
-
-
-def build_option_list(options):
-    return [{'label': option[0], 'value': option[0]} for option in options]
-
 
 content = html.Div(
     className='rounded shadow-lg p-4 bg-gray-100 flex flex-wrap',
@@ -33,7 +30,9 @@ content = html.Div(
                     id='distributors-filter',
                     options=[],
                     multi=True,
-                    value=['Grandes Superficies']
+                    # value=['Grandes Superficies']
+                    value=[]
+
                 ),
             ],
         ),
@@ -45,7 +44,9 @@ content = html.Div(
                     id='brands-filter',
                     options=[],
                     multi=True,
-                    value=['Criollas']
+                    # value=['Criollas']
+                    value=[]
+
                 ),
             ]
         ),
@@ -57,7 +58,9 @@ content = html.Div(
                     id='categories-filter',
                     options=[],
                     multi=True,
-                    value=['Producto En Frituras']
+                    # value=['Producto En Frituras']
+                    value=[]
+
                 ),
             ]
         ),
@@ -69,7 +72,8 @@ content = html.Div(
                     id='offices-filter',
                     options=[],
                     multi=True,
-                    value=['Cali']
+                    # value=['Cali']
+                    value=[]
                 ),
             ]
         ),

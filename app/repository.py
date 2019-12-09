@@ -80,9 +80,9 @@ def stringify_filter(filters):
 # GET SALES WITH FILTERS
 def get_sales(filters):
     where_clause = stringify_filter(filters)
-    sales = pd.read_sql(("select p.brand as brand, p.category, f.name as flavor, s.date,s.units,s.devolution_units,s.sale_amount,"
+    sales = pd.read_sql(("SELECT p.brand as brand, p.category, f.name as flavor, s.date,s.units,s.devolution_units,s.sale_amount,"
                          "s.sale_discount,s.sale_devolution,s.incentive,l.name as office, s.office_id,"
-                         "lw.name as warehouse, ps.name as point_of_sale, d.name as distributor from sales as s "
+                         "lw.name as warehouse, ps.name as point_of_sale, d.name as distributor FROM sales as s "
                          "JOIN locations as l on l.id = s.office_id "
                          "JOIN locations as lw on lw.id = s.warehouse_id "
                          "LEFT JOIN points_of_sale as ps on ps.id = s.point_of_sale_id "
@@ -95,10 +95,3 @@ def get_sales(filters):
                          ),
                         connection, params={'start_date': filters['start_date'], 'end_date': filters['end_date']})
     return sales
-
-
-# filters = get_initial_filter()
-# print(filters['brands'])
-# sales = get_sales(filters)
-# print(sales.shape)
-# print(sales.brand.unique())
